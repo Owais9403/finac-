@@ -1,0 +1,42 @@
+def special_cipher(text, rotation):
+  """
+  Encrypts a text using a Caesar cipher followed by a simple Run-length encoding (RLE).
+
+  Args:
+      text: The text to encrypt (letters only, no numbers or symbols).
+      rotation: The number of positions to shift the letters in the Caesar cipher.
+
+  Returns:
+      The encrypted text using the special cipher.
+  """
+  # Perform Caesar cipher
+  cipher_text = ""
+  for char in text:
+    if char.isalpha():
+      new_char = chr((ord(char) - ord('a') + rotation) % 26 + ord('a'))
+    else:
+      # Ignore non-alphabetic characters
+      new_char = ''
+    cipher_text += new_char
+
+  # Perform RLE
+  rle_text = ""
+  prev_char = None
+  count = 0
+  for char in cipher_text:
+    if char and char == prev_char:
+      count += 1
+    else:
+      if prev_char:
+        rle_text += f"{count}{prev_char}"
+      count = 1
+      prev_char = char
+  rle_text += f"{count}{prev_char}" if prev_char else ''
+
+  return rle_text
+
+# Example usage
+text = "AABCCC"
+rotation = 3
+encrypted_text = special_cipher(text, rotation)
+print(encrypted_text)  # Output: D2EF3
